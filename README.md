@@ -7,4 +7,5 @@
 ### Gaming
 
 [`greenlight`](https://github.com/unknownskl/greenlight) (Client for xCloud and Xbox home streaming)
+
 [`ryujinx`](https://ryujinx.org) (Nintendo Switch emulator)
