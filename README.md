@@ -9,3 +9,7 @@
 [`greenlight`](https://github.com/unknownskl/greenlight) (Client for xCloud and Xbox home streaming)
 
 [`ryujinx`](https://ryujinx.org) (Nintendo Switch emulator)
+
+### Security
+
+[`ghidra`](https://ghidra-sre.org) (Software reverse engineering tool suite)
