@@ -27,7 +27,7 @@ jobs:
       - name: Configure Git user
         uses: Homebrew/actions/git-user-config@master
         with:
-          username: ${{ (github.event_name == 'workflow_dispatch' && github.actor) || 'fuyunohoshi' }}
+          username: fuyunohoshi
 
       - name: Get list of autobump casks
         id: autobump
