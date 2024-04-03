@@ -39,3 +39,4 @@ jobs:
         with:
           token: ${{ secrets.BOT_TOKEN }}
           casks: ${{ github.event.inputs.casks || steps.autobump.outputs.autobump_list }}
+          fork: false
