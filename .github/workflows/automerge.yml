@@ -25,7 +25,6 @@ jobs:
           token: ${{ secrets.BOT_TOKEN }}
           merge-method: squash
           squash-commit-title: ${pull_request.title} (#${pull_request.number})
-          squash-commit-message: '\n'
           pull-request: ${{ github.event.inputs.pull-request }}
           pull-request-author-associations: COLLABORATOR,OWNER
           review: ${{ github.event.inputs.review }}
