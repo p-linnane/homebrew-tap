@@ -1,6 +1,6 @@
 cask "greenlight" do
-  version "2.3.0"
-  sha256 "e27b2128a47e7157ca1a98c0913a17c7ae8582f1d35afec3b09d44c9b3da7a56"
+  version "2.3.1"
+  sha256 "8ee2bd65cdeeb3a5af772e5f4b5d6d47f80e48a04db3fd276fc67b70e573452b"
 
   url "https://github.com/unknownskl/greenlight/releases/download/v#{version}/Greenlight-#{version}-universal.dmg"
   name "Greenlight"
