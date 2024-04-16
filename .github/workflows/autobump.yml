@@ -18,14 +18,14 @@ jobs:
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
-        uses: Homebrew/actions/setup-homebrew@master
+        uses: Homebrew/actions/setup-homebrew@7d44b0b345b6c3dbe0509cc28d95445899803032
         with:
           cask: false
           core: false
           test-bot: false
 
       - name: Configure Git user
-        uses: Homebrew/actions/git-user-config@master
+        uses: Homebrew/actions/git-user-config@c62170a03ff2bcb9ab097fd7d6acbc905618e42a
         with:
           username: fuyunohoshi
 
@@ -34,7 +34,7 @@ jobs:
         run: echo "autobump_list=$(brew tap-info p-linnane/cask-unsigned --json | jq -c -r '.[0]["cask_tokens"]|join(" ")')" >> "$GITHUB_OUTPUT"
 
       - name: Bump casks
-        uses: Homebrew/actions/bump-packages@master
+        uses: Homebrew/actions/bump-packages@c27d2aeb50672861da1bfe7cde0b26888951d25d
         continue-on-error: true
         with:
           token: ${{ secrets.BOT_TOKEN }}

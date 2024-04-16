@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Enable auto-merge
-        uses: reitermarkus/automerge@634d0a4b51134c163eee182ac9aa79133eb33e8d
+        uses: reitermarkus/automerge@634d0a4b51134c163eee182ac9aa79133eb33e8d # v2.8.0
         with:
           token: ${{ secrets.BOT_TOKEN }}
           merge-method: squash

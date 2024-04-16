@@ -39,14 +39,14 @@ jobs:
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
-        uses: Homebrew/actions/setup-homebrew@master
+        uses: Homebrew/actions/setup-homebrew@7d44b0b345b6c3dbe0509cc28d95445899803032
         with:
           core: false
           cask: true
           test-bot: false
 
       - name: Check out Pull Request
-        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.1
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -72,7 +72,7 @@ jobs:
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
-        uses: Homebrew/actions/setup-homebrew@master
+        uses: Homebrew/actions/setup-homebrew@7d44b0b345b6c3dbe0509cc28d95445899803032
         with:
           core: false
           cask: true
@@ -85,7 +85,7 @@ jobs:
         if: runner.debug
 
       - name: Check out Pull Request
-        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.1
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -113,7 +113,7 @@ jobs:
 
       - name: Cache Homebrew Gems
         id: cache
-        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9
+        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
         with:
           path: ${{ steps.set-up-homebrew.outputs.gems-path }}
           key: ${{ matrix.runner }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
