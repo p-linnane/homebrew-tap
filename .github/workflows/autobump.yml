@@ -31,7 +31,7 @@ jobs:
 
       - name: Get list of autobump casks
         id: autobump
-        run: echo "autobump_list=$(brew tap-info p-linnane/cask-unsigned --json | jq -c -r '.[0]["cask_tokens"]|join(" ")')" >> "$GITHUB_OUTPUT"
+        run: echo "autobump_list=$(brew tap-info p-linnane/homebrew-tap --json | jq -c -r '.[0]["cask_tokens"]|join(" ")')" >> "$GITHUB_OUTPUT"
 
       - name: Bump casks
         uses: Homebrew/actions/bump-packages@c27d2aeb50672861da1bfe7cde0b26888951d25d
