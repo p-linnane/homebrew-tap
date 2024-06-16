@@ -93,19 +93,19 @@ jobs:
       - name: Clean up CI machine
         run: |
           if [ "${{ matrix.runner }}" == 'macos-12' ] && ! brew uninstall --cask julia && ! rm -r /Applications/Julia-*.app; then
-            echo '::warning::Removing Julia is no longer necessary.'
+            echo "::warning::Removing \`julia\` is no longer necessary."
           fi
 
           if ! rm /usr/local/bin/dotnet; then
-            echo '::warning::Removing `dotnet` symlink is no longer necessary.'
+            echo "::warning::Removing \`dotnet\` symlink is no longer necessary."
           fi
 
           if ! rm /usr/local/bin/pod; then
-            echo '::warning::Removing `cocoapods` symlink is no longer necessary.'
+            echo "::warning::Removing \`cocoapods\` symlink is no longer necessary."
           fi
 
           if ! rm /usr/local/bin/chromedriver; then
-            echo '::warning::Removing `chromedriver` symlink is no longer necessary.'
+            echo "::warning::Removing \`chromedriver\` symlink is no longer necessary."
           fi
 
           brew unlink python && brew link --overwrite python
@@ -131,7 +131,7 @@ jobs:
         timeout-minutes: 30
         if: >
           always() &&
-          contains(fromJSON('["success", "skipped"]'), steps.readall.outcome) &&
+          contains(fromJSON('["success", "skipped"]'), steps.tap-syntax.outcome) &&
           matrix.cask
 
       - name: Run brew audit --cask${{ (matrix.cask && ' ') || ' --tap ' }}${{ matrix.cask.token || matrix.tap }}
@@ -141,7 +141,7 @@ jobs:
         timeout-minutes: 30
         if: >
           always() &&
-          contains(fromJSON('["success", "skipped"]'), steps.readall.outcome) &&
+          contains(fromJSON('["success", "skipped"]'), steps.tap-syntax.outcome) &&
           (!matrix.cask || steps.fetch.outcome == 'success') &&
           !matrix.skip_audit
 
