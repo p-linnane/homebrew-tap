@@ -59,7 +59,7 @@ jobs:
         run: |
           if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]
           then
-            HOMEBREW_NO_INSTALL_FROM_API=1 brew ruby -- "$(brew --repository homebrew/cask)/cmd/lib/generate-matrix.rb" ${{ github.event.inputs.skip_install  && '--skip-install' }} ${{ github.event.inputs.new_cask  && '--new' }} --casks=${{ github.event.inputs.casks }}
+            HOMEBREW_NO_INSTALL_FROM_API=1 brew ruby -- "$(brew --repository homebrew/cask)/cmd/lib/generate-matrix.rb" ${{ github.event.inputs.skip_install && '--skip-install' }} ${{ github.event.inputs.new_cask && '--new' }} --casks="$INPUT_CASKS"
           elif [[ "${GITHUB_EVENT_NAME}" == "push" ]]
           then
             brew ruby -- "$(brew --repository homebrew/cask)/cmd/lib/generate-matrix.rb" --syntax-only
@@ -97,6 +97,7 @@ jobs:
           persist-credentials: false
 
       - name: Clean up CI machine
+        if: runner.os == 'macOS'
         run: |
           if [ "${{ matrix.runner }}" == 'macos-12' ] && ! brew uninstall --cask julia && ! rm -r /Applications/Julia-*.app; then
             echo "::warning::Removing \`julia\` is no longer necessary."
@@ -115,7 +116,16 @@ jobs:
           fi
 
           brew unlink python && brew link --overwrite python
-        if: runner.os == 'macOS'
+
+      - name: Clean up Mono from CI machine
+        if: matrix.runner != 'macos-14' && matrix.arch != 'arm'
+        run: |
+          if ! rm /usr/local/share/man/man1/al.1 || \
+             ! sudo rm /etc/paths.d/mono-commands || \
+             ! sudo rm -r /Library/Frameworks/Mono.framework || \
+             ! sudo pkgutil --forget com.xamarin.mono-MDK.pkg; then
+            echo '::warning::Uninstalling Mono is no longer necessary.'
+          fi
 
       - name: Cache Homebrew Gems
         id: cache
@@ -124,6 +134,14 @@ jobs:
           path: ${{ steps.set-up-homebrew.outputs.gems-path }}
           key: ${{ matrix.runner }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
           restore-keys: ${{ matrix.runner }}-rubygems-
+
+      - name: Cache style cache
+        if: runner.os == 'macOS'
+        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
+        with:
+          path: ~/Library/Caches/Homebrew/style
+          key: macos-style-cache-${{ github.sha }}
+          restore-keys: macos-style-cache-
 
       - name: Run brew test-bot --only-tap-syntax
         id: tap-syntax
@@ -161,9 +179,11 @@ jobs:
             cask = Cask::CaskLoader.load('${{ matrix.cask.path }}')
 
             was_installed = cask.installed?
-            manual_installer = cask.artifacts.any? { |artifact|
-              artifact.is_a?(Cask::Artifact::Installer::ManualInstaller)
-            }
+            manual_installer = cask.artifacts.any? do |artifact|
+              if defined?(artifact.manual_install)
+                artifact.manual_install
+              end
+            end
 
             macos_requirement_satisfied = if macos_requirement = cask.depends_on.macos
               macos_requirement.satisfied?
@@ -232,12 +252,6 @@ jobs:
       - name: Run brew uninstall --cask ${{ matrix.cask.token }}
         run: brew uninstall --cask '${{ matrix.cask.path }}'
         if: always() && steps.install.outcome == 'success' && !fromJSON(steps.info.outputs.manual_installer)
-        timeout-minutes: 30
-
-      - name: Uninstall formula dependencies
-        run: |
-          brew uninstall --formula ${{ join(fromJSON(steps.info.outputs.formula_dependencies), ' ') }}
-        if: always() && steps.install.outcome == 'success' && join(fromJSON(steps.info.outputs.formula_dependencies)) != ''
         timeout-minutes: 30
 
       - name: Uninstall cask dependencies
