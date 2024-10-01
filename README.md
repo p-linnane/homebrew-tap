@@ -14,3 +14,5 @@ Since I prefer to install everything using `brew`, I've created this tap to host
 [`greenlight`](https://github.com/unknownskl/greenlight) (Client for xCloud and Xbox home streaming)
 
 [`ryujinx`](https://ryujinx.org) (Nintendo Switch emulator)
+
+[`wizcli`](https://www.wiz.io) (CLI for the Wiz platform)
