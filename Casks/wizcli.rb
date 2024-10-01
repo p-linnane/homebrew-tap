@@ -18,5 +18,5 @@ cask "wizcli" do
 
   binary "wizcli-darwin-#{arch}", target: "wizcli"
 
-  # No zap stanza required
+  zap trash: "~/.wiz"
 end
