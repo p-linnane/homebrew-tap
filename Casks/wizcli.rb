@@ -5,7 +5,7 @@ cask "wizcli" do
   sha256 arm:   "e4deee998c4089cff52afe56d28ae82b31fee070a4f4b7ad751a6529a6370ae7",
          intel: "9619afca48784402fb8e099511baefe9ab75c38d328911e7fcbde5b75192c715"
 
-  url "https://downloads.wiz.io/wizcli/latest/wizcli-darwin-#{arch}"
+  url "https://downloads.wiz.io/wizcli/#{version}/wizcli-darwin-#{arch}"
   name "Wiz CLI"
   desc "CLI for interacting with the Wiz platform"
   homepage "https://www.wiz.io/"
