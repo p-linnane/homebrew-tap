@@ -8,7 +8,7 @@ cask "ryujinx" do
   desc "Nintendo Switch emulator"
   homepage "https://ryujinx.org/"
 
-  deprecate! date: "2024-10-01", because: :no_longer_available
+  disable! date: "2024-10-01", because: :no_longer_available
 
   depends_on macos: ">= :monterey"
 
