@@ -12,5 +12,3 @@ Since I prefer to install everything using `brew`, I've created this tap to host
 [`ghidra`](https://ghidra-sre.org) (Software reverse engineering tool suite)
 
 [`greenlight`](https://github.com/unknownskl/greenlight) (Client for xCloud and Xbox home streaming)
-
-~~[`ryujinx`](https://ryujinx.org) (Nintendo Switch emulator)~~ [No longer available]
