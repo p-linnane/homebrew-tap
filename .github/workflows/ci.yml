@@ -56,15 +56,19 @@ jobs:
 
       - name: Generate CI matrix
         id: generate-matrix
+        env:
+          INPUT_CASKS: ${{ github.event.inputs.casks }}
+          PULL_REQUEST_URL: ${{ github.event.pull_request.url }}
         run: |
           if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]
           then
-            HOMEBREW_NO_INSTALL_FROM_API=1 brew ruby -- "$(brew --repository homebrew/cask)/cmd/lib/generate-matrix.rb" ${{ github.event.inputs.skip_install && '--skip-install' }} ${{ github.event.inputs.new_cask && '--new' }} --casks="$INPUT_CASKS"
+            # shellcheck disable=SC2086 # $INPUT_CASKS is a space-separated list of cask tokens
+            brew generate-cask-ci-matrix ${{ github.event.inputs.skip_install && '--skip-install' }} ${{ github.event.inputs.new_cask && '--new' }} --casks $INPUT_CASKS
           elif [[ "${GITHUB_EVENT_NAME}" == "push" ]]
           then
-            brew ruby -- "$(brew --repository homebrew/cask)/cmd/lib/generate-matrix.rb" --syntax-only
+            brew generate-cask-ci-matrix --syntax-only
           else
-            brew ruby -- "$(brew --repository homebrew/cask)/cmd/lib/generate-matrix.rb" --url="${{ github.event.pull_request.url }}"
+            brew generate-cask-ci-matrix --url "$PULL_REQUEST_URL"
           fi
 
   test:
@@ -175,24 +179,29 @@ jobs:
             File.open(ENV.fetch("GITHUB_OUTPUT"), "a") do |f|
               f.puts "manual_installer=#{JSON.generate(manual_installer)}"
               f.puts "macos_requirement_satisfied=#{JSON.generate(macos_requirement_satisfied)}"
-              f.puts "cask_conflicts=#{JSON.generate(cask_conflicts)}"
-              f.puts "cask_dependencies=#{JSON.generate(cask_dependencies)}"
-              f.puts "formula_conflicts=#{JSON.generate(formula_conflicts)}"
               f.puts "formula_dependencies=#{JSON.generate(formula_dependencies)}"
+            end
+
+            File.open(ENV.fetch("GITHUB_ENV"), "a") do |f|
+              f.puts "CASK_CONFLICTS=#{cask_conflicts&.join(" ")}" if cask_conflicts.present?
+              f.puts "CASK_DEPENDENCIES=#{cask_dependencies&.join(" ")}" if cask_dependencies.present?
+              f.puts "FORMULA_CONFLICTS=#{formula_conflicts&.join(" ")}" if formula_conflicts.present?
             end
           EOF
         if: always() && steps.fetch.outcome == 'success' && matrix.cask
 
       - name: Uninstall conflicting formulae
         run: |
-          brew uninstall --formula ${{ join(fromJSON(steps.info.outputs.formula_conflicts), ' ') }}
-        if: always() && steps.info.outcome == 'success' && join(fromJSON(steps.info.outputs.formula_conflicts)) != ''
+          read -r -a formula_conflicts_array <<< "$FORMULA_CONFLICTS"
+          brew uninstall --formula "${formula_conflicts_array[@]}"
+        if: ${{ always() && steps.info.outcome == 'success' && env.FORMULA_CONFLICTS != '' }}
         timeout-minutes: 30
 
       - name: Uninstall conflicting casks
         run: |
-          brew uninstall --cask ${{ join(fromJSON(steps.info.outputs.cask_conflicts), ' ') }}
-        if: always() && steps.info.outcome == 'success' && join(fromJSON(steps.info.outputs.cask_conflicts)) != ''
+          read -r -a cask_conflicts_array <<< "$CASK_CONFLICTS"
+          brew uninstall --cask "${cask_conflicts_array[@]}"
+        if: ${{ always() && steps.info.outcome == 'success' && env.CASK_CONFLICTS != '' }}
         timeout-minutes: 30
 
       - name: Run brew uninstall --cask --force --zap ${{ matrix.cask.token }}
@@ -205,8 +214,10 @@ jobs:
         id: snapshot
         run: |
           brew ruby -r "$(brew --repository homebrew/cask)/cmd/lib/check.rb" <<'EOF'
-            File.open(ENV.fetch("GITHUB_OUTPUT"), "a") do |f|
-              f.puts "before=#{JSON.generate(Check.all)}"
+            File.open(ENV.fetch("GITHUB_ENV"), "a") do |f|
+              # We have to use a `HOMEBREW_` prefix so it will survive the
+              # environment variable filtering in `brew`.
+              f.puts "HOMEBREW_SNAPSHOT_BEFORE=#{JSON.generate(Check.all)}"
             end
           EOF
         if: always() && steps.info.outcome == 'success'
@@ -227,8 +238,9 @@ jobs:
 
       - name: Uninstall cask dependencies
         run: |
-          brew uninstall --cask ${{ join(fromJSON(steps.info.outputs.cask_dependencies), ' ') }}
-        if: always() && steps.install.outcome == 'success' && join(fromJSON(steps.info.outputs.cask_dependencies)) != ''
+          read -r -a cask_dependencies_array <<< "$CASK_DEPENDENCIES"
+          brew uninstall --cask "${cask_dependencies_array[@]}"
+        if: ${{ always() && steps.install.outcome == 'success' && env.CASK_DEPENDENCIES != '' }}
         timeout-minutes: 30
 
       - name: Compare installed and running apps and services with snapshot
@@ -237,9 +249,8 @@ jobs:
             require "cask/cask_loader"
             require "utils/github/actions"
 
-            before = JSON.parse(<<~'EOS').transform_keys(&:to_sym)
-              ${{ steps.snapshot.outputs.before }}
-            EOS
+            before = JSON.parse(ENV.fetch("HOMEBREW_SNAPSHOT_BEFORE", "{}"))
+                         .transform_keys(&:to_sym)
             after = Check.all
 
             cask = Cask::CaskLoader.load('${{ matrix.cask.path }}')
@@ -252,7 +263,7 @@ jobs:
 
             exit 1 if errors.any?
           EOF
-        if: always() && steps.snapshot.outcome == 'success'
+        if: always() && steps.snapshot.outcome == 'success' && steps.install.outcome == 'success'
 
   conclusion:
     name: conclusion
