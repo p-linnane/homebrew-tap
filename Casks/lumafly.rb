@@ -10,6 +10,8 @@ cask "lumafly" do
 
   app "Lumafly.app"
 
+  zap trash: "~/.config/HKModInstaller"
+
   caveats <<~EOS
     This software is not signed and does not meet macOS Gatekeeper requirements.
     Running it requires bypassing built-in macOS protections, which reduces system security.
