@@ -8,7 +8,3 @@ As a Homebrew maintainer, I've found various software that is useful but does no
 Since I prefer to install everything using `brew`, I've created this tap to host that sort of software.
 
 ## Casks
-
-[`ghidra`](https://ghidra-sre.org) (Software reverse engineering tool suite)
-
-[`greenlight`](https://github.com/unknownskl/greenlight) (Client for xCloud and Xbox home streaming)
