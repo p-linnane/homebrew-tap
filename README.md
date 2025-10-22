@@ -8,3 +8,5 @@ As a Homebrew maintainer, I've found various software that is useful but does no
 Since I prefer to install everything using `brew`, I've created this tap to host that sort of software.
 
 ## Casks
+
+[`lumafly`](https://themulhima.github.io/Lumafly/) (Mod manager for Hollow Knight)
