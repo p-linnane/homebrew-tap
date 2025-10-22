@@ -129,10 +129,10 @@ jobs:
           contains(fromJSON('["success", "skipped"]'), steps.tap-syntax.outcome) &&
           matrix.cask
 
-      - name: Run brew audit --cask${{ (matrix.cask && ' ') || ' --tap ' }}${{ matrix.cask.token || matrix.tap }}
+      - name: Run brew audit --cask --strict ${{ (matrix.cask && ' ') || ' --tap ' }}${{ matrix.cask.token || matrix.tap }}
         id: audit
         run: |
-          brew audit --cask ${{ join(matrix.audit_args, ' ') }}${{ (matrix.cask && ' ') || ' --tap ' }}'${{ matrix.cask.token || matrix.tap }}'
+          brew audit --cask --strict ${{ (matrix.cask && ' ') || ' --tap ' }}'${{ matrix.cask.token || matrix.tap }}'
         timeout-minutes: 30
         if: >
           always() &&
