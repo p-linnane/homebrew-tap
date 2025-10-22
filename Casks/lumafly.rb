@@ -4,7 +4,7 @@ cask "lumafly" do
 
   url "https://github.com/TheMulhima/Lumafly/releases/download/v#{version}/Lumafly-MacOS.zip",
       verified: "github.com/TheMulhima/Lumafly/"
-  name "lumafly"
+  name "Lumafly"
   desc "Mod manager for Hollow Knight"
   homepage "https://themulhima.github.io/Lumafly/"
 
