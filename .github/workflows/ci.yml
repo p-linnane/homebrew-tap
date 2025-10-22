@@ -15,11 +15,6 @@ on:
         required: false
         default: true
         type: boolean
-      new_cask:
-        description: Apply new cask audit
-        required: false
-        default: false
-        type: boolean
 
 env:
   HOMEBREW_DEVELOPER: 1
@@ -62,7 +57,7 @@ jobs:
           if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]
           then
             # shellcheck disable=SC2086 # $INPUT_CASKS is a space-separated list of cask tokens
-            brew generate-cask-ci-matrix ${{ github.event.inputs.skip_install && '--skip-install' }} ${{ github.event.inputs.new_cask && '--new' }} --casks $INPUT_CASKS
+            brew generate-cask-ci-matrix ${{ github.event.inputs.skip_install && '--skip-install' }} --casks $INPUT_CASKS
           elif [[ "${GITHUB_EVENT_NAME}" == "push" ]]
           then
             brew generate-cask-ci-matrix --syntax-only
