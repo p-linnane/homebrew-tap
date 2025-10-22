@@ -10,3 +10,5 @@ Since I prefer to install everything using `brew`, I've created this tap to host
 ## Casks
 
 [`lumafly`](https://themulhima.github.io/Lumafly/) (Mod manager for Hollow Knight)
+
+[`scarab`](https://github.com/fifty-six/Scarab) (Mod manager for Hollow Knight)
