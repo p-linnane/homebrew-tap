@@ -1,6 +1,6 @@
 cask "scarab" do
-  version "2.6.0.0"
-  sha256 "d9db9d019584eb1775142b26c4408c1b55e79b01d9d9c6705b408c13a0662c3b"
+  version "2.7.0.0"
+  sha256 "9c6b96df169294a47652d52755d1de37b93f9615b60b86e098a98efc479c9392"
 
   url "https://github.com/fifty-six/Scarab/releases/download/v#{version}/mac.zip"
   name "Scarab"
