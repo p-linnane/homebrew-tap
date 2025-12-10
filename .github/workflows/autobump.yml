@@ -23,7 +23,7 @@ jobs:
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@main
         with:
-          core: false
+          core: true
           cask: true
 
       - name: Configure Git user
@@ -45,5 +45,5 @@ jobs:
           if [[ -n "${CASKS-}" ]]; then
             xargs "${BREW_BUMP[@]}" <<<"${CASKS}"
           else
-            "${BREW_BUMP[@]}" --auto --tap=p-linnane/homebrew-tap
+            "${BREW_BUMP[@]}" --tap=p-linnane/homebrew-tap
           fi
