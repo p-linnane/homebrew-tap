@@ -60,7 +60,7 @@ jobs:
     needs: workflow_syntax
     # We want to always upload this even if `actionlint` failed.
     if: always() && !contains(fromJSON('["cancelled", "skipped"]'), needs.workflow_syntax.result)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     permissions:
       contents: read
       security-events: write
