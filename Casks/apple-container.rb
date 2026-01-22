@@ -1,6 +1,6 @@
 cask "apple-container" do
-  version "0.7.1"
-  sha256 "dab7e1f0e0f41f9050909b27493f3ce94d9dc9fe1a79d26f090ce227d613c671"
+  version "0.8.0"
+  sha256 "6603d430d20f6f799215f729a4350bcf79cba371d96cb9d66fcefae46f05472f"
 
   url "https://github.com/apple/container/releases/download/#{version}/container-installer-signed.pkg"
   name "container"
