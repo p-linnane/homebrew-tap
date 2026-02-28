@@ -1,8 +1,8 @@
 cask "apple-container" do
-  version "0.9.0"
-  sha256 "e8a432b11f396d5ce50e44ea14f02f7df90ffcef441c916b2fa92b63e95f5801"
+  version "0.10.0"
+  sha256 "c481ce355524d036c3cddac7fd281e31794d40690bf9a21f732ef3d76fa9fe08"
 
-  url "https://github.com/apple/container/releases/download/#{version}/container-installer-signed.pkg"
+  url "https://github.com/apple/container/releases/download/#{version}/container-#{version}-installer-signed.pkg"
   name "container"
   desc "Create and run Linux containers using lightweight virtual machines"
   homepage "https://github.com/apple/container"
@@ -15,7 +15,7 @@ cask "apple-container" do
   depends_on arch: :arm64
   depends_on macos: ">= :sequoia"
 
-  pkg "container-installer-signed.pkg"
+  pkg "container-#{version}-installer-signed.pkg"
 
   # container APIs aren't guaranteed to be backward compatible,
   # so we stop the system service to ensure no components are out of sync.
