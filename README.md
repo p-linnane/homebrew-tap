@@ -13,4 +13,6 @@ Since I prefer to install everything using `brew`, I've created this tap to host
 
 [`lumafly`](https://themulhima.github.io/Lumafly/) (Mod manager for Hollow Knight)
 
+[`macOSdb`](https://github.com/p-linnane/macOSdb) (Browse and compare macOS components)
+
 [`scarab`](https://github.com/fifty-six/Scarab) (Mod manager for Hollow Knight)
