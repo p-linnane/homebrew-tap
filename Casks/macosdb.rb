@@ -11,6 +11,7 @@ cask "macosdb" do
   depends_on macos: ">= :sequoia"
 
   app "macOSdb.app"
+  binary "#{appdir}/macOSdb.app/Contents/MacOS/macosdb-tool", target: "macosdb"
 
   zap trash: [
     "~/Library/Application Scripts/io.linnane.macOSdb",
