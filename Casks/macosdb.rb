@@ -1,6 +1,6 @@
 cask "macosdb" do
-  version "1.0.1"
-  sha256 "7b4ef7d85ba49bce7cd6c01bc1abdd551949c361b93dbde3530de5eafc2593f8"
+  version "1.1.0"
+  sha256 "97b077508b50b94c9b187ca430ebc1897da0177e77030fd9cbe6290694ab7279"
 
   url "https://github.com/p-linnane/macOSdb/releases/download/#{version}/macOSdb-#{version}.zip"
   name "macOSdb"
@@ -11,6 +11,7 @@ cask "macosdb" do
   depends_on macos: ">= :sequoia"
 
   app "macOSdb.app"
+  binary "#{appdir}/macOSdb.app/Contents/MacOS/macosdb-tool", target: "macosdb"
 
   zap trash: [
     "~/Library/Application Scripts/io.linnane.macOSdb",
