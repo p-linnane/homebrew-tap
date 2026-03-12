@@ -31,6 +31,7 @@ permissions:
 
 jobs:
   generate-matrix:
+    name: Generate matrix
     outputs:
       matrix: ${{ steps.generate-matrix.outputs.matrix }}
     runs-on: macos-latest
@@ -53,11 +54,12 @@ jobs:
         env:
           INPUT_CASKS: ${{ github.event.inputs.casks }}
           PULL_REQUEST_URL: ${{ github.event.pull_request.url }}
+          SKIP_INSTALL: ${{ github.event.inputs.skip_install }}
         run: |
           if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]
           then
-            # shellcheck disable=SC2086 # $INPUT_CASKS is a space-separated list of cask tokens
-            brew generate-cask-ci-matrix ${{ github.event.inputs.skip_install && '--skip-install' }} --casks $INPUT_CASKS
+            # shellcheck disable=SC2086,SC2046 # $INPUT_CASKS is a space-separated list of cask tokens
+            brew generate-cask-ci-matrix $([[ "$SKIP_INSTALL" == "true" ]] && echo '--skip-install') --casks $INPUT_CASKS
           elif [[ "${GITHUB_EVENT_NAME}" == "push" ]]
           then
             brew generate-cask-ci-matrix --syntax-only
@@ -116,13 +118,19 @@ jobs:
 
       - name: Run brew test-bot --only-tap-syntax
         id: tap-syntax
-        run: brew test-bot --tap '${{ matrix.tap }}' --only-tap-syntax
+        env:
+          TAP: ${{ matrix.tap }}
+        run: brew test-bot --tap "$TAP" --only-tap-syntax
         if: always() && !matrix.cask
 
       - name: Run brew fetch --cask ${{ matrix.cask.token }}
         id: fetch
+        env:
+          FETCH_ARGS: ${{ join(matrix.fetch_args, ' ') }}
+          CASK_PATH: ${{ matrix.cask.path }}
         run: |
-          brew fetch --cask --retry --force ${{ join(matrix.fetch_args, ' ') }} '${{ matrix.cask.path }}'
+          # shellcheck disable=SC2086 # $FETCH_ARGS is a space-separated list of arguments
+          brew fetch --cask --retry --force $FETCH_ARGS "$CASK_PATH"
         timeout-minutes: 30
         if: >
           always() &&
@@ -131,8 +139,16 @@ jobs:
 
       - name: Run brew audit --cask --online --strict ${{ (matrix.cask && ' ') || ' --tap ' }}${{ matrix.cask.token || matrix.tap }}
         id: audit
+        env:
+          CASK_TOKEN: ${{ matrix.cask.token }}
+          TAP: ${{ matrix.tap }}
+          IS_CASK: ${{ matrix.cask && 'true' || 'false' }}
         run: |
-          brew audit --cask --online --strict ${{ (matrix.cask && ' ') || ' --tap ' }}'${{ matrix.cask.token || matrix.tap }}'
+          if [[ "$IS_CASK" == "true" ]]; then
+            brew audit --cask --online --strict "$CASK_TOKEN"
+          else
+            brew audit --cask --online --strict --tap "$TAP"
+          fi
         timeout-minutes: 30
         if: >
           always() &&
@@ -142,12 +158,14 @@ jobs:
 
       - name: Gather cask information
         id: info
+        env:
+          HOMEBREW_CASK_PATH: ${{ matrix.cask.path }}
         run: |
           brew ruby <<'EOF'
             require 'cask/cask_loader'
             require 'cask/installer'
 
-            cask = Cask::CaskLoader.load('${{ matrix.cask.path }}')
+            cask = Cask::CaskLoader.load(ENV.fetch("HOMEBREW_CASK_PATH"))
 
             manual_installer = cask.artifacts.any? do |artifact|
               if defined?(artifact.manual_install)
@@ -199,8 +217,10 @@ jobs:
         timeout-minutes: 30
 
       - name: Run brew uninstall --cask --force --zap ${{ matrix.cask.token }}
+        env:
+          CASK_PATH: ${{ matrix.cask.path }}
         run: |
-          brew uninstall --cask --force --zap '${{ matrix.cask.path }}'
+          brew uninstall --cask --force --zap "$CASK_PATH"
         if: always() && steps.info.outcome == 'success'
         timeout-minutes: 30
 
@@ -218,7 +238,9 @@ jobs:
 
       - name: Run brew install --cask ${{ matrix.cask.token }}
         id: install
-        run: brew install --cask '${{ matrix.cask.path }}'
+        env:
+          CASK_PATH: ${{ matrix.cask.path }}
+        run: brew install --cask "$CASK_PATH"
         if: >
           always() && steps.info.outcome == 'success' &&
           fromJSON(steps.info.outputs.macos_requirement_satisfied) &&
@@ -226,7 +248,9 @@ jobs:
         timeout-minutes: 30
 
       - name: Run brew uninstall --cask ${{ matrix.cask.token }}
-        run: brew uninstall --cask '${{ matrix.cask.path }}'
+        env:
+          CASK_PATH: ${{ matrix.cask.path }}
+        run: brew uninstall --cask "$CASK_PATH"
         if: always() && steps.install.outcome == 'success' && !fromJSON(steps.info.outputs.manual_installer)
         timeout-minutes: 30
 
@@ -238,6 +262,8 @@ jobs:
         timeout-minutes: 30
 
       - name: Compare installed and running apps and services with snapshot (macOS only)
+        env:
+          HOMEBREW_CASK_PATH: ${{ matrix.cask.path }}
         run: |
           brew ruby -r "$(brew --repository homebrew/cask)/cmd/lib/check.rb" <<'EOF'
             require "cask/cask_loader"
@@ -247,11 +273,12 @@ jobs:
                          .transform_keys(&:to_sym)
             after = Check.all
 
-            cask = Cask::CaskLoader.load('${{ matrix.cask.path }}')
+            cask_path = ENV.fetch("HOMEBREW_CASK_PATH")
+            cask = Cask::CaskLoader.load(cask_path)
             errors = Check.errors(before, after, cask: cask)
 
             errors.each do |error|
-              puts GitHub::Actions::Annotation.new(:error, error, file: '${{ matrix.cask.path }}')
+              puts GitHub::Actions::Annotation.new(:error, error, file: cask_path)
             end
 
             exit 1 if errors.any?
@@ -265,4 +292,6 @@ jobs:
     if: always()
     steps:
       - name: Result
-        run: ${{ needs.test.result == 'success' }}
+        env:
+          TEST_RESULT: ${{ needs.test.result }}
+        run: test "$TEST_RESULT" = "success"

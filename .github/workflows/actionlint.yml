@@ -23,6 +23,7 @@ permissions: {}
 
 jobs:
   workflow_syntax:
+    name: Workflow syntax
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -57,13 +58,14 @@ jobs:
       - run: actionlint
 
   upload_sarif:
+    name: Upload SARIF
     needs: workflow_syntax
     # We want to always upload this even if `actionlint` failed.
     if: always() && !contains(fromJSON('["cancelled", "skipped"]'), needs.workflow_syntax.result)
     runs-on: ubuntu-slim
     permissions:
       contents: read
-      security-events: write
+      security-events: write # Upload SARIF results to GitHub Code Scanning
     steps:
       - name: Download SARIF file
         uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
