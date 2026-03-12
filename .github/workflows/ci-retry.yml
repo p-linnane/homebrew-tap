@@ -5,10 +5,7 @@ on:
     - cron: "0 */1 * * *"
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pull-requests: read
-  actions: write
+permissions: {}
 
 concurrency:
   group: ci-retry
@@ -17,6 +14,10 @@ concurrency:
 jobs:
   retry-failed:
     name: Re-run failed jobs for labeled PRs
+    permissions:
+      contents: read
+      pull-requests: read # List open PRs with ci-retry label
+      actions: write # Re-run failed workflow jobs
     runs-on: ubuntu-slim
     timeout-minutes: 10
     steps:

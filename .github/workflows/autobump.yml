@@ -10,11 +10,17 @@ on:
     # Every 2 hours 15 minutes past the hour
     - cron: "15 */2 * * *"
 
+concurrency:
+  group: autobump
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
 jobs:
   autobump:
+    name: Autobump casks
+    environment: autobump
     env:
       HOMEBREW_DEVELOPER: 1
     runs-on: macos-26
