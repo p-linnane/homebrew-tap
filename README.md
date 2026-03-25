@@ -1,18 +1,21 @@
-# An unofficial tap for software not suitable for the main Homebrew repos
+# homebrew-tap
 
-[Homebrew](https://brew.sh) requires software to adhere to certain requirements in order to be included in
-[`homebrew-core`](https://docs.brew.sh/Acceptable-Formulae) or [`homebrew-cask`](https://docs.brew.sh/Acceptable-Casks).
+An unofficial [Homebrew](https://brew.sh) tap for software that doesn't meet the requirements for [`homebrew-core`](https://docs.brew.sh/Acceptable-Formulae) or [`homebrew-cask`](https://docs.brew.sh/Acceptable-Casks).
 
-As a Homebrew maintainer, I've found various software that is useful but does not meet those requirements.
+As a Homebrew maintainer, I prefer to install everything using `brew`, so I created this tap to host useful software that falls outside the main repos.
 
-Since I prefer to install everything using `brew`, I've created this tap to host that sort of software.
+## Usage
+
+```
+brew tap p-linnane/tap
+brew install --cask <cask-name>
+```
 
 ## Casks
 
-[`apple-container`](https://github.com/apple/container) (Create and run Linux containers using lightweight virtual machines)
-
-[`lumafly`](https://themulhima.github.io/Lumafly/) (Mod manager for Hollow Knight)
-
-[`macOSdb`](https://github.com/p-linnane/macOSdb) (Browse and compare macOS components)
-
-[`scarab`](https://github.com/fifty-six/Scarab) (Mod manager for Hollow Knight)
+| Cask | Description |
+| --- | --- |
+| [`apple-container`](https://github.com/apple/container) | Create and run Linux containers using lightweight virtual machines |
+| [`lumafly`](https://themulhima.github.io/Lumafly/) | Mod manager for Hollow Knight |
+| [`macosdb`](https://github.com/p-linnane/macOSdb) | Browse and compare open-source components shipped in IPSW files |
+| [`scarab`](https://github.com/fifty-six/Scarab) | Mod manager for Hollow Knight |
