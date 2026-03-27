@@ -1,0 +1,6 @@
+self-hosted-runner:
+  labels: []
+paths:
+  .github/workflows/**/*.{yml,yaml}:
+    ignore:
+      - 'unexpected key "deployment"'
