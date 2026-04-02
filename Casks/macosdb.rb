@@ -4,7 +4,7 @@ cask "macosdb" do
 
   url "https://github.com/p-linnane/macOSdb/releases/download/#{version}/macOSdb-#{version}.zip"
   name "macOSdb"
-  desc "Browse and compare open-source components shipped in IPSW files"
+  desc "Catalog of open-source components from .ipsw and .xip files"
   homepage "https://github.com/p-linnane/macOSdb"
 
   depends_on arch: :arm64
