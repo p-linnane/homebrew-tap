@@ -1,6 +1,6 @@
 cask "macosdb" do
-  version "1.10.1"
-  sha256 "b6d565bf3f8807b1d893e236b998fca48c5fd965586b0ab1349504dc7e5fc257"
+  version "1.11.0"
+  sha256 "9c217e518207c125f8916cde5a7d35ba65df9b009a3e021bdf8a9600a5f9e0ff"
 
   url "https://github.com/p-linnane/macOSdb/releases/download/#{version}/macOSdb-#{version}.zip"
   name "macOSdb"
