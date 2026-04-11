@@ -17,7 +17,7 @@ cask "pinprick" do
 
   on_linux do
     sha256 arm64_linux:  "80f48f85a6ca4c93cfdcff29338b1e00c300db3e9da9dc81a265a6fbef59f190",
-           x86_64_linux: "008ea8843d660754223672c4d9daac4a239f7db72d0a18f8109a7fdd2a40f3b2"
+           x86_64_linux: "bb51f31a4b5ba3add8cd42759d76f60418b5b5d26249f505a9f311b6deb5bb58"
   end
 
   binary "pinprick"
