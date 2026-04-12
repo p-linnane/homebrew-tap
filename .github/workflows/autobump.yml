@@ -20,7 +20,9 @@ permissions:
 jobs:
   autobump:
     name: Autobump casks
-    environment: starhaven
+    environment:
+      name: starhaven
+      deployment: false
     env:
       HOMEBREW_DEVELOPER: 1
     runs-on: macos-26
