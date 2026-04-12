@@ -2,7 +2,7 @@ cask "pinprick" do
   arch arm: "aarch64", intel: "x86_64"
   os macos: "apple-darwin", linux: "unknown-linux-gnu"
 
-  version "0.3.2"
+  version "0.3.3"
 
   url "https://github.com/p-linnane/pinprick/releases/download/v#{version}/pinprick-#{version}-#{arch}-#{os}.tar.gz"
   name "pinprick"
@@ -10,14 +10,14 @@ cask "pinprick" do
   homepage "https://github.com/p-linnane/pinprick"
 
   on_macos do
-    sha256 "7abbdfc1cae4ebc5f18109de670ffda7d8bfaf9d296d7416aac57ddea1282691"
+    sha256 "9a189626500cffa42b732201d9db667eae60140e1d55ee6a4ab9325f9a77cb81"
 
     depends_on arch: :arm64
   end
 
   on_linux do
-    sha256 arm64_linux:  "b99ddf60a1315fafe2e89eb80815bb654f6569ad567bf9cf8c182600482e5032",
-           x86_64_linux: "7626db0db4d242206af54db16034b6bc4a5e327e205d7f489f06446d4007c603"
+    sha256 arm64_linux:  "dfe3c27a342377c3c622e27e15e9bbb39dd6c153bff82534dca1cb9997b737a5",
+           x86_64_linux: "e27e759eb1e4402acdc799d8e3bb88902d7ac329419b3281cbd33b4e595472a6"
   end
 
   binary "pinprick"
