@@ -17,5 +17,4 @@ brew install --cask <cask-name>
 | --- | --- |
 | [`apple-container`](https://github.com/apple/container) | Create and run Linux containers using lightweight virtual machines |
 | [`lumafly`](https://themulhima.github.io/Lumafly/) | Mod manager for Hollow Knight |
-| [`macosdb`](https://github.com/p-linnane/macOSdb) | Browse and compare open-source components shipped in IPSW files |
 | [`scarab`](https://github.com/fifty-six/Scarab) | Mod manager for Hollow Knight |
