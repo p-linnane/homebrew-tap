@@ -7,6 +7,8 @@ cask "scarab" do
   desc "Mod manager for Hollow Knight"
   homepage "https://github.com/fifty-six/Scarab"
 
+  depends_on :macos
+
   app "Scarab.app"
 
   zap trash: "~/Library/Application Support/HKModInstaller"
