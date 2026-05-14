@@ -8,6 +8,8 @@ cask "lumafly" do
   desc "Mod manager for Hollow Knight"
   homepage "https://themulhima.github.io/Lumafly/"
 
+  depends_on :macos
+
   app "Lumafly.app"
 
   zap trash: "~/.config/HKModInstaller"

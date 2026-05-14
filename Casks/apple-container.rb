@@ -13,7 +13,7 @@ cask "apple-container" do
   end
 
   depends_on arch: :arm64
-  depends_on macos: ">= :sequoia"
+  depends_on macos: :sequoia
 
   pkg "container-#{version}-installer-signed.pkg"
 
