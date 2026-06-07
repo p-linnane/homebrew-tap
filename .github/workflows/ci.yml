@@ -102,22 +102,6 @@ jobs:
         if: runner.os == 'macOS'
         run: brew test-bot --cleanup --only-cleanup-before
 
-      - name: Cache Homebrew Gems
-        id: cache
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
-        with:
-          path: ${{ steps.set-up-homebrew.outputs.gems-path }}
-          key: ${{ matrix.runner }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
-          restore-keys: ${{ matrix.runner }}-rubygems-
-
-      - name: Cache style cache
-        if: runner.os == 'macOS'
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
-        with:
-          path: ~/Library/Caches/Homebrew/style
-          key: macos-style-cache-${{ github.sha }}
-          restore-keys: macos-style-cache-
-
       - name: Run brew test-bot --only-tap-syntax
         id: tap-syntax
         env:

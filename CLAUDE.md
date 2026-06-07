@@ -39,7 +39,7 @@ brew bump --no-fork --open-pr --cask <cask-token>
 
 ## CI
 
-PRs trigger `brew generate-cask-ci-matrix` which audits, fetches, and optionally installs each changed cask. Push to `main` runs syntax-only checks. The autobump workflow runs every 2 hours to check for new upstream releases.
+PRs trigger `brew generate-cask-ci-matrix` which audits, fetches, and optionally installs each changed cask. Push to `main` runs syntax-only checks. The autobump workflow runs twice a day to check for new upstream releases.
 
 ## Commit Conventions
 
@@ -48,8 +48,8 @@ Conventional Commits format: `type(scope): description`
 Common types: `feat`, `fix`, `refactor`, `docs`, `ci`, `chore`
 
 All commits must:
-- Use `git commit -s` for DCO sign-off
-- Include a `Co-authored-by: Claude Opus 4.6 <noreply@anthropic.com>` trailer when authored with Claude
+- Include a `Signed-off-by` trailer for DCO sign-off (`git commit -s`)
+- Include a `Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>` trailer when authored with Claude, placed after `Signed-off-by`. Bump the model version as newer ones ship.
 
 ## Git Workflow
 
