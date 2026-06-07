@@ -72,7 +72,7 @@ jobs:
     name: ${{ matrix.name }}
     needs: generate-matrix
     runs-on: ${{ matrix.runner }}
-    container: ${{ matrix.container || null }}
+    container: ${{ matrix.container || null }} # zizmor: ignore[unpinned-images]
     strategy:
       fail-fast: false
       matrix:
