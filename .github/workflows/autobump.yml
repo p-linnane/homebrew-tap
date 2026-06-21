@@ -14,8 +14,11 @@ concurrency:
   group: autobump
   cancel-in-progress: true
 
-permissions:
-  contents: read
+defaults:
+  run:
+    shell: bash -euo pipefail {0}
+
+permissions: {}
 
 jobs:
   autobump:
