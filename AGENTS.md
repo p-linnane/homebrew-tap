@@ -49,7 +49,6 @@ Before committing README link changes:
   directory in this tap.
 - `.github/workflows/`: CI, autobump automation, workflow security checks, and
   cask audit/fetch/install tests.
-- `.github/zizmor.yml`: workflow audit policy.
 - `lychee.toml`: README link-check configuration.
 - `README.md`: user-facing tap overview and cask list.
 
@@ -97,8 +96,8 @@ Before committing README link changes:
 2. Do not use mutable cask URLs, `latest` release URLs, or `sha256 :no_check`.
 3. Before trusting token-based Homebrew checks, verify that
    `brew --repo p-linnane/tap` points at the checkout you are editing.
-4. Keep the `Homebrew/actions/*` zizmor exception scoped to upstream Homebrew
-   actions; do not generalize it to other moving refs.
+4. Pin `Homebrew/actions/*` to a full commit SHA and keep the published CalVer
+   tag in the adjacent version comment.
 
 ## Commit and PR conventions
 
