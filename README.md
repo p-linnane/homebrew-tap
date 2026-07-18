@@ -1,26 +1,26 @@
 # homebrew-tap
 
-[![CI](https://github.com/p-linnane/homebrew-tap/actions/workflows/ci.yml/badge.svg)](https://github.com/p-linnane/homebrew-tap/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+> [!IMPORTANT]
+> This tap is retired. The `macosdb` and `pinprick` casks have moved to
+> [`starhaven-io/tap`](https://github.com/starhaven-io/homebrew-tap).
 
-An unofficial [Homebrew](https://brew.sh) tap for software that does not meet the
-requirements for [`homebrew-core`](https://docs.brew.sh/Acceptable-Formulae) or
-[`homebrew-cask`](https://docs.brew.sh/Acceptable-Casks).
-
-## Usage
+Existing installs need no action: [`tap_migrations.json`](tap_migrations.json)
+redirects both casks, so `brew update` migrates them to `starhaven-io/tap`
+automatically and `brew upgrade` keeps them current. Leave this tap in place
+until that migration has run, then remove it:
 
 ```sh
-brew tap p-linnane/tap
-brew install --cask <cask-name>
+brew untap p-linnane/tap
 ```
 
-## Casks
+To install from the new tap directly:
 
-| Cask | Description |
-| --- | --- |
-| [`apple-container`](https://github.com/apple/container) | Create and run Linux containers using lightweight virtual machines |
-| [`lumafly`](https://themulhima.github.io/Lumafly/) | Mod manager for Hollow Knight |
-| [`scarab`](https://github.com/fifty-six/Scarab) | Mod manager for Hollow Knight |
+```sh
+brew tap starhaven-io/tap
+```
+
+The other casks once maintained here — `apple-container`, `lumafly`, and
+`scarab` — are no longer published from this repository.
 
 ## License
 
