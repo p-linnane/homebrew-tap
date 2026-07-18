@@ -1,8 +1,0 @@
-# Local machine/editor/agent state
-.claude/
-.codex/
-.DS_Store
-.vscode/
-
-# Homebrew test-bot output
-steps_output.txt
