@@ -19,9 +19,6 @@ To install from the new tap directly:
 brew tap starhaven-io/tap
 ```
 
-The other casks once maintained here — `apple-container`, `lumafly`, and
-`scarab` — are no longer published from this repository.
-
 ## License
 
 This tap is licensed under the [MIT License](LICENSE).
